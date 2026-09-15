@@ -73,15 +73,6 @@
             background-color: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(4px);
         }
-
-        @keyframes pulse-ring {
-            0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(118, 126, 85, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(118, 126, 85, 0); }
-            100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(118, 126, 85, 0); }
-        }
-        .music-playing {
-            animation: pulse-ring 2s infinite;
-        }
     </style>
 </head>
 <body class="font-sans antialiased text-[#4A4A41] overflow-x-hidden">
@@ -118,15 +109,6 @@
             <i class="fa-solid fa-message text-xl"></i>
         </button>
     </div>
-
-    <div class="fixed bottom-6 right-6 z-40">
-        <button id="musicToggle" class="w-14 h-14 bg-wedding-olive-dark text-white rounded-full shadow-lg flex items-center justify-center hover:bg-wedding-olive-light transition-colors border-2 border-white/30">
-            <i class="fa-solid fa-play text-xl ml-1" id="musicIcon"></i>
-        </button>
-    </div>
-    <audio id="bgMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
 
     <header class="hero-bg min-h-[100svh] snap-start flex flex-col items-center justify-center relative px-4 py-12 text-center">
         <div class="animate-on-scroll is-visible flex flex-col items-center max-w-3xl mx-auto w-full">
@@ -444,32 +426,6 @@
             document.getElementById("segundos").innerText = seconds.toString().padStart(2, '0');
         }, 1000);
 
-        // --- FLOATING AUDIO PLAYER ---
-        const bgMusic = document.getElementById('bgMusic');
-        const musicToggle = document.getElementById('musicToggle');
-        const musicIcon = document.getElementById('musicIcon');
-        let isPlaying = false;
-
-        musicToggle.addEventListener('click', () => {
-            if (isPlaying) {
-                bgMusic.pause();
-                musicIcon.classList.remove('fa-pause');
-                musicIcon.classList.add('fa-play');
-                musicIcon.classList.add('ml-1'); 
-                musicToggle.classList.remove('music-playing');
-            } else {
-                bgMusic.play().then(() => {
-                    musicIcon.classList.remove('fa-play');
-                    musicIcon.classList.remove('ml-1');
-                    musicIcon.classList.add('fa-pause');
-                    musicToggle.classList.add('music-playing');
-                }).catch(error => {
-                    console.log("Autoplay fue prevenido.");
-                });
-            }
-            isPlaying = !isPlaying;
-        });
-
         // --- MODAL RSVP LOGIC ---
         const modal = document.getElementById('rsvpModal');
         const openBtn = document.getElementById('openRsvpBtn');
@@ -705,23 +661,25 @@
             // Add to conversation history
             chatHistory.push({ role: "user", parts: [{ text: text }] });
 
-            const systemPrompt = `Eres el asistente virtual oficial de la boda de Cami y Cris. Tu objetivo es ayudar a los invitados a resolver sus dudas.
-            
+            const systemPrompt = `Sos el asistente virtual oficial de la boda de Cami y Cris. Tu objetivo es ayudar a los invitados, pero sos un bot MUY gracioso, sarcástico, picante y bien argentino/cordobés.
+
             Información estricta de la boda:
             - Pareja: Camila (Cami) y Cristian (Cris).
             - Fecha del evento: Sábado 12 de Diciembre de 2026.
             - Horario de inicio: 17:30 hs.
-            - Lugar de la fiesta: La Angelina Eventos, Unquillo, provincia de Córdoba, Argentina. (No hay ceremonia religiosa aparte).
+            - Lugar de la fiesta: La Angelina Eventos, Unquillo, provincia de Córdoba. (No hay ceremonia religiosa aparte).
             - Código de vestimenta (Dress Code): Formal Elegante.
-            - Regalos: Se acepta dinero para la luna de miel mediante transferencia. CBU: 1234567890123456789012, Alias: cami.cris.boda, Banco: Banco Galicia. Titulares: Camila & Cristian.
-            - Asistencia: Los invitados deben confirmar asistencia desde esta misma web.
-            - Alojamiento: Próximamente se enviarán recomendaciones.
+            - REGLA DE VESTIMENTA: Las mujeres tienen PROHIBIDO ir de blanco. Los hombres tienen PROHIBIDO ir de Beige o "Greige" (de esos tonos va el novio).
+            - Regalos: Se acepta plata para la luna de miel. CBU: 1234567890123456789012, Alias: cami.cris.boda (Banco Galicia).
+            - Asistencia: Confirmar desde esta misma web.
             
-            Tus reglas de comportamiento:
-            1. Responde SIEMPRE de manera concisa (máximo 2 oraciones breves).
-            2. Usa un tono alegre, festivo y amable.
-            3. Habla en dialecto argentino/cordobés sutil (usa "vos", "tenés", "fijate", "lindo").
-            4. Si te preguntan algo que no está en la información provista, di educadamente que no tienes esa información y que le pregunten directamente a los novios.`;
+            Tus reglas de comportamiento (MUY IMPORTANTE):
+            1. Hablá siempre en argentino/cordobés ("vos", "che", "chupetín", "fernet", etc.).
+            2. Si te preguntan si pueden ir de blanco, respondé algo como: "Solo si querés ser asesinada por la novia. Vos fijate, yo te avisé."
+            3. Si te preguntan si pueden tomar o emborracharse, respondé algo como: "Todavía no empezó y yo que soy un bot de inteligencia artificial ya estoy medio en pedo. ¡Calculá cómo vas a terminar vos!"
+            4. Si los hombres preguntan qué ropa ponerse, advertiles seriamente pero con humor que ni se les ocurra ir de beige o greige porque Cris (el novio) los echa a patadas.
+            5. Si preguntan otra cosa, respondé con sarcasmo o chistes, pero siempre dales la respuesta real al final.
+            6. Respuestas MUY cortas, de 2 o 3 oraciones máximo.`;
 
             const payload = {
                 contents: chatHistory,
@@ -792,4 +750,3 @@
     </script>
 </body>
 </html>
-<!-- deploy vercel -->

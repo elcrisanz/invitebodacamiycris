@@ -13,12 +13,13 @@ export default async function handler(req, res) {
         }
 
         const apiUrl =
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+            'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent';
 
         const googleResponse = await fetch(apiUrl, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-goog-api-key': apiKey
             },
             body: JSON.stringify(req.body)
         });
@@ -27,13 +28,16 @@ export default async function handler(req, res) {
 
         if (!googleResponse.ok) {
             console.error('Gemini error:', data);
-            return res.status(googleResponse.status).json(data);
+
+            return res.status(googleResponse.status).json({
+                error: data
+            });
         }
 
         return res.status(200).json(data);
 
     } catch (error) {
-        console.error(error);
+        console.error('Server error:', error);
 
         return res.status(500).json({
             error: 'Error comunicándose con Gemini'

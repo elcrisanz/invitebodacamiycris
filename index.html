@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth snap-y snap-mandatory">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Nos Casamos! Cami & Cris</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'wedding-bg': '#F3F1E7',     
+                        'wedding-sand': '#E4DFCA',   
+                        'wedding-sage': '#BBC0A3',   
+                        'wedding-olive-light': '#7F865C', 
+                        'wedding-olive-dark': '#737356',  
+                        'wedding-earth': '#8B7858',    
+                        'wedding-green': '#818B27',    
+                        'wedding-mustard': '#BCA226',  
+                        
+                        'wedding-text': '#4A4A41',    
+                        'wedding-text-light': '#6B6B5F',
+                    },
+                    fontFamily: {
+                        'serif': ['"Cormorant Garamond"', 'serif'],
+                        'sans': ['Montserrat', 'sans-serif'],
+                        'script': ['"Pinyon Script"', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F3F1E7;
+            color: #4A4A41;
+            overflow-x: hidden;
+        }
+
+        .hero-bg {
+            background-image: linear-gradient(rgba(243, 241, 231, 0.75), rgba(243, 241, 231, 0.95)), url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .logo-blend {
+            mix-blend-mode: multiply;
+            filter: contrast(1.1);
+        }
+
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(118, 126, 85, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(118, 126, 85, 0); }
+            100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(118, 126, 85, 0); }
+        }
+        .music-playing {
+            animation: pulse-ring 2s infinite;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-[#4A4A41] overflow-x-hidden">
+
+    <!-- AI Wedding Assistant Chat -->
+    <div class="fixed bottom-6 left-6 z-40 flex flex-col items-start">
+        
+        <!-- Chat Window -->
+        <div id="chatWindow" class="mb-4 w-72 sm:w-80 bg-white rounded-xl shadow-2xl border border-wedding-sand hidden flex-col overflow-hidden transition-all duration-300 transform origin-bottom-left">
+            <div class="bg-wedding-olive-dark text-white p-3 md:p-4 font-serif flex justify-between items-center shadow-md z-10">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles text-wedding-mustard"></i>
+                    <span class="font-medium tracking-wide">Asistente Boda</span>
+                </div>
+                <button id="closeChat" class="hover:text-wedding-mustard transition-colors"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            
+            <div id="chatMessages" class="p-4 h-64 overflow-y-auto bg-[#F9F8F3] flex flex-col gap-3 font-sans text-sm text-wedding-text scroll-smooth">
+                <div class="bg-white border border-wedding-sand p-3 rounded-lg rounded-tl-none shadow-sm self-start max-w-[85%] leading-relaxed">
+                    ¡Hola! ✨ Soy el asistente virtual de la boda de Cami y Cris. ¿Tenés alguna duda sobre el dress code, horarios, regalos o cómo llegar?
+                </div>
+            </div>
+            
+            <div class="p-3 border-t border-wedding-sand bg-white flex gap-2 items-center">
+                <input type="text" id="chatInput" placeholder="Escribí tu pregunta..." class="flex-1 px-3 py-2.5 border border-wedding-sand rounded-lg focus:outline-none focus:border-wedding-olive-dark focus:ring-1 focus:ring-wedding-olive-dark transition-all text-sm bg-wedding-bg/50">
+                <button id="sendChat" class="bg-wedding-olive-dark text-white w-10 h-10 rounded-lg hover:bg-wedding-olive-light shadow-sm transition-colors flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-paper-plane text-xs relative right-0.5"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Chat Toggle Button -->
+        <button id="chatToggle" class="w-14 h-14 bg-white text-wedding-olive-dark rounded-full shadow-lg flex items-center justify-center hover:bg-wedding-bg transition-colors border border-wedding-sand hover:scale-105 transform duration-200">
+            <i class="fa-solid fa-message text-xl"></i>
+        </button>
+    </div>
+
+    <div class="fixed bottom-6 right-6 z-40">
+        <button id="musicToggle" class="w-14 h-14 bg-wedding-olive-dark text-white rounded-full shadow-lg flex items-center justify-center hover:bg-wedding-olive-light transition-colors border-2 border-white/30">
+            <i class="fa-solid fa-play text-xl ml-1" id="musicIcon"></i>
+        </button>
+    </div>
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <header class="hero-bg min-h-[100svh] snap-start flex flex-col items-center justify-center relative px-4 py-12 text-center">
+        <div class="animate-on-scroll is-visible flex flex-col items-center max-w-3xl mx-auto w-full">
+            
+            <img src="ChatGPT Image 30 ago 2026, 18_45_53.png" alt="C&C Logo" class="logo-blend w-48 sm:w-64 md:w-80 mb-6 drop-shadow-sm" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <h2 class="font-serif text-4xl hidden mb-6 text-wedding-olive-dark">C & C</h2>
+            
+            <p class="font-serif italic text-2xl md:text-3xl text-wedding-olive-light mb-2">¡Nos casamos!</p>
+            <h1 class="font-serif text-5xl sm:text-6xl md:text-7xl mb-6 tracking-wide text-wedding-text font-medium">Cami & Cris</h1>
+            
+            <div class="h-px w-32 bg-wedding-olive-light mb-6"></div>
+            
+            <p class="font-serif text-lg sm:text-xl md:text-2xl tracking-[0.1em] uppercase mb-10 text-wedding-text font-medium">12 de Diciembre 2026</p>
+
+            <div class="flex gap-2 sm:gap-4 md:gap-8 font-serif text-center mt-2 bg-white/60 p-4 sm:p-6 rounded-xl backdrop-blur-sm border border-wedding-sand shadow-sm w-full max-w-[95%] sm:max-w-max mx-auto justify-center">
+                <div class="flex flex-col items-center">
+                    <span id="dias" class="text-3xl sm:text-4xl md:text-5xl font-medium text-wedding-olive-dark">00</span>
+                    <span class="font-sans text-[10px] sm:text-xs uppercase tracking-widest text-wedding-text-light mt-1 sm:mt-2 font-medium">Días</span>
+                </div>
+                <div class="text-2xl sm:text-3xl md:text-4xl font-light text-wedding-earth pt-1">:</div>
+                <div class="flex flex-col items-center">
+                    <span id="horas" class="text-3xl sm:text-4xl md:text-5xl font-medium text-wedding-olive-dark">00</span>
+                    <span class="font-sans text-[10px] sm:text-xs uppercase tracking-widest text-wedding-text-light mt-1 sm:mt-2 font-medium">Horas</span>
+                </div>
+                <div class="text-2xl sm:text-3xl md:text-4xl font-light text-wedding-earth pt-1">:</div>
+                <div class="flex flex-col items-center">
+                    <span id="minutos" class="text-3xl sm:text-4xl md:text-5xl font-medium text-wedding-olive-dark">00</span>
+                    <span class="font-sans text-[10px] sm:text-xs uppercase tracking-widest text-wedding-text-light mt-1 sm:mt-2 font-medium">Min</span>
+                </div>
+                <div class="text-2xl sm:text-3xl md:text-4xl font-light text-wedding-earth pt-1 hidden md:block">:</div>
+                <div class="flex flex-col items-center hidden md:flex">
+                    <span id="segundos" class="text-3xl sm:text-4xl md:text-5xl font-medium text-wedding-olive-dark">00</span>
+                    <span class="font-sans text-[10px] sm:text-xs uppercase tracking-widest text-wedding-text-light mt-1 sm:mt-2 font-medium">Seg</span>
+                </div>
+            </div>
+            
+            <div class="mt-12 sm:mt-16 animate-bounce">
+                <a href="#invitacion" class="text-wedding-olive-dark hover:text-wedding-olive-light transition-colors duration-300">
+                    <i class="fa-solid fa-chevron-down text-2xl"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Intro + Detalles del Evento (Fiesta) -->
+    <section id="invitacion" class="min-h-[100svh] snap-start flex flex-col justify-center py-16 bg-wedding-bg px-4 sm:px-6 gap-10 md:gap-14">
+        
+        <!-- Texto Introductorio -->
+        <div class="animate-on-scroll max-w-xl mx-auto text-center">
+            <p class="font-serif italic text-2xl sm:text-3xl text-wedding-earth mb-4">Queremos celebrar</p>
+            <p class="font-serif text-2xl sm:text-3xl md:text-4xl leading-relaxed font-medium px-2 sm:px-4 text-wedding-text">
+                junto a vos este momento tan especial para nosotros.
+            </p>
+        </div>
+
+        <!-- Tarjeta de la Fiesta -->
+        <div class="max-w-md mx-auto w-full">
+            <div class="animate-on-scroll bg-white p-8 sm:p-10 rounded-2xl shadow-md text-center flex flex-col items-center border border-wedding-sage/30 w-full" style="transition-delay: 0.1s;">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 bg-wedding-bg rounded-full flex items-center justify-center mb-6 shadow-inner text-wedding-olive-dark border border-wedding-sage/50">
+                    <i class="fa-solid fa-champagne-glasses text-2xl sm:text-3xl"></i>
+                </div>
+                <h3 class="font-serif text-3xl sm:text-4xl mb-3 text-wedding-text font-medium">La Fiesta</h3>
+                <p class="font-sans text-xs sm:text-sm tracking-widest uppercase mb-6 text-wedding-earth font-semibold">12 de Diciembre - 17:30 hs</p>
+                <p class="font-serif text-2xl sm:text-3xl mb-2 text-wedding-text">La Angelina Eventos</p>
+                <p class="font-sans text-wedding-text-light mb-8 font-medium text-sm sm:text-base">Unquillo, Córdoba</p>
+                
+                <a href="https://maps.app.goo.gl/cxBafPKFR77cqNAy7" target="_blank" rel="noopener noreferrer" class="mt-auto w-full px-6 py-4 bg-wedding-olive-dark text-white hover:bg-wedding-olive-light transition-all duration-300 tracking-wider text-xs sm:text-sm uppercase rounded-lg shadow-md flex items-center justify-center font-medium">
+                    Cómo llegar <i class="fa-solid fa-map-location-dot ml-3 text-lg"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- RSVP + Detalles Extra (Dress Code & Alojamiento) -->
+    <section class="min-h-[100svh] snap-start flex flex-col justify-center py-16 px-6 bg-wedding-sand/50">
+        <div class="max-w-4xl mx-auto w-full">
+            
+            <!-- Encabezado RSVP -->
+            <div class="text-center mb-12 sm:mb-16 animate-on-scroll">
+                <h2 class="font-serif text-4xl sm:text-5xl text-wedding-olive-dark mb-4 font-medium">Confirmación de Asistencia</h2>
+                <p class="font-serif text-xl sm:text-2xl mb-8 font-medium text-wedding-text">
+                    Esperamos que seas parte de esta gran celebración.
+                </p>
+                <button id="openRsvpBtn" class="w-full sm:w-auto px-8 sm:px-12 py-4 bg-wedding-text text-white font-sans uppercase tracking-[0.15em] text-xs sm:text-sm hover:bg-wedding-olive-dark transition-all duration-300 shadow-xl rounded-lg border border-wedding-sage/50">
+                    Confirmar Asistencia
+                </button>
+            </div>
+
+            <!-- Grid de Detalles -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 text-center w-full">
+                <!-- Dress Code -->
+                <div class="animate-on-scroll bg-white p-8 rounded-xl shadow-sm border border-wedding-sand">
+                    <i class="fa-solid fa-shirt text-4xl text-wedding-olive-dark mb-4"></i>
+                    <h3 class="font-serif text-3xl mb-3 font-medium text-wedding-text">Dress Code</h3>
+                    <p class="font-sans uppercase tracking-widest font-bold text-wedding-text">Formal Elegante</p>
+                    <p class="text-sm text-wedding-text-light mt-3 font-medium">Te esperamos con tus mejores galas para celebrar.</p>
+                </div>
+
+                <!-- Alojamiento -->
+                <div class="animate-on-scroll bg-white p-8 rounded-xl shadow-sm border border-wedding-sand" style="transition-delay: 0.1s;">
+                    <i class="fa-solid fa-bed text-4xl text-wedding-olive-dark mb-4"></i>
+                    <h3 class="font-serif text-3xl mb-3 font-medium text-wedding-text">¿Necesitás alojamiento?</h3>
+                    <p class="text-sm text-wedding-text-light mb-4 font-medium">Próximamente compartiremos nuestras recomendaciones para tu estadía.</p>
+                    <span class="inline-block border-b-2 border-wedding-earth text-wedding-text font-bold text-sm uppercase tracking-wider pb-1">
+                        Pronto más info
+                    </span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Regalos -->
+    <section class="min-h-[100svh] snap-start flex flex-col justify-center py-16 px-4 sm:px-6 text-center bg-wedding-sand/50">
+        <div class="max-w-2xl mx-auto w-full animate-on-scroll">
+            <div class="w-16 h-16 mx-auto bg-white rounded-full flex items-center justify-center mb-6 shadow-sm text-wedding-olive-dark border border-wedding-sage/50">
+                <i class="fa-solid fa-gift text-2xl"></i>
+            </div>
+            <h2 class="font-serif text-4xl sm:text-5xl mb-4 text-wedding-text font-medium">Regalos</h2>
+            <p class="font-serif text-lg sm:text-xl md:text-2xl mb-10 font-medium text-wedding-text-light leading-relaxed">
+                El mejor regalo es que compartas este día con nosotros.<br> 
+                Pero si deseás ayudarnos con nuestra luna de miel:
+            </p>
+            
+            <div class="bg-white p-5 sm:p-8 rounded-xl shadow-md border border-wedding-sage/30 text-left w-full max-w-md mx-auto overflow-hidden">
+                <p class="font-sans text-sm mb-3 text-wedding-text"><span class="font-bold">Titular:</span> Camila & Cristian</p>
+                <p class="font-sans text-sm mb-3 text-wedding-text"><span class="font-bold">Banco:</span> Banco Galicia</p>
+                
+                <div class="flex flex-row justify-between items-center bg-wedding-bg p-3 sm:p-4 rounded-lg mt-4 border border-wedding-sand gap-2">
+                    <div class="flex-1 min-w-0">
+                        <p class="font-sans text-[11px] sm:text-sm font-mono break-all text-wedding-text font-medium">CBU: 1234567890123456789012</p>
+                    </div>
+                    <button onclick="copyCBU()" class="shrink-0 text-wedding-olive-dark hover:text-wedding-olive-light transition-colors bg-white p-2 sm:p-2.5 rounded shadow-sm border border-wedding-sand/50" title="Copiar CBU">
+                        <i class="fa-regular fa-copy text-base sm:text-lg"></i>
+                    </button>
+                </div>
+                
+                <div class="flex flex-row justify-between items-center bg-wedding-bg p-3 sm:p-4 rounded-lg mt-3 border border-wedding-sand gap-2">
+                    <div class="flex-1 min-w-0">
+                        <p class="font-sans text-[11px] sm:text-sm font-mono break-all text-wedding-text font-medium">Alias: cami.cris.boda</p>
+                    </div>
+                    <button onclick="copyAlias()" class="shrink-0 text-wedding-olive-dark hover:text-wedding-olive-light transition-colors bg-white p-2 sm:p-2.5 rounded shadow-sm border border-wedding-sand/50" title="Copiar Alias">
+                        <i class="fa-regular fa-copy text-base sm:text-lg"></i>
+                    </button>
+                </div>
+                
+                <p id="copyMsg" class="text-xs text-wedding-olive-dark mt-3 text-center font-bold opacity-0 transition-opacity">¡Copiado al portapapeles!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Música -->
+    <section class="min-h-[100svh] snap-start flex flex-col justify-center py-16 px-4 sm:px-6 text-center bg-wedding-bg">
+        <div class="max-w-3xl mx-auto w-full animate-on-scroll">
+            <h2 class="font-serif text-4xl sm:text-5xl text-wedding-olive-dark mb-4 font-medium">¿Qué canciones no pueden faltar?</h2>
+            <p class="font-serif text-xl sm:text-2xl mb-4 font-medium text-wedding-text">
+                ¡Ayudanos a armar la playlist de la fiesta!
+            </p>
+            <p class="font-sans text-sm text-wedding-text-light mb-8 max-w-lg mx-auto leading-relaxed">
+                Podés sumar tus canciones tocando el logo de Spotify en el reproductor, o haciendo clic en el botón para abrir la lista colaborativa en la app.
+            </p>
+            
+            <!-- Spotify Embed -->
+            <div class="shadow-2xl rounded-xl overflow-hidden bg-wedding-text p-2 border-4 border-wedding-sand mb-6">
+                <iframe 
+                    style="border-radius:8px" 
+                    src="https://open.spotify.com/embed/playlist/58yo2piM1cky7OGDQbqKhe?utm_source=generator&theme=0" 
+                    width="100%" 
+                    height="352" 
+                    frameBorder="0" 
+                    allowfullscreen="" 
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                    loading="lazy">
+                </iframe>
+            </div>
+
+            <!-- Botón Directo Spotify -->
+            <div class="mb-10">
+                <a href="https://open.spotify.com/playlist/58yo2piM1cky7OGDQbqKhe" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 bg-[#1DB954] text-white hover:bg-[#1ed760] transition-colors rounded-full font-sans text-sm font-semibold shadow-md">
+                    <i class="fa-brands fa-spotify text-lg"></i> Abrir en Spotify para agregar temas
+                </a>
+            </div>
+
+            <!-- Alternative Form for Songs -->
+            <div class="bg-white p-6 sm:p-8 rounded-xl shadow-md border border-wedding-sand max-w-xl mx-auto text-left w-full">
+                <p class="text-sm text-center text-wedding-text-light mb-6 font-medium">Si no tenés Spotify, dejanos tu canción infaltable por acá:</p>
+                
+                <form id="songForm" class="space-y-4 font-sans">
+                    <div>
+                        <input type="text" name="cancion" placeholder="Ej: Danza Kuduro | Don Omar" required class="w-full px-4 py-3 border border-wedding-sand rounded focus:outline-none focus:border-wedding-olive-dark focus:ring-1 focus:ring-wedding-olive-dark transition-colors bg-wedding-bg text-base">
+                    </div>
+                    <div class="pt-2">
+                        <button type="submit" class="w-full py-4 bg-wedding-olive-dark text-white uppercase tracking-wider font-semibold hover:bg-wedding-olive-light transition-colors rounded shadow-md text-sm">
+                            Enviar Sugerencia
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal RSVP -->
+    <div id="rsvpModal" class="fixed inset-0 z-50 hidden items-center justify-center px-4">
+        <div id="modalBackdrop" class="absolute inset-0 modal-overlay transition-opacity"></div>
+        <div class="bg-white rounded-2xl shadow-2xl z-10 w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
+            
+            <!-- Header Modal -->
+            <div class="bg-wedding-olive-dark p-6 text-center relative shrink-0">
+                <button id="closeModal" class="absolute top-4 right-4 text-white/80 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-2xl"></i>
+                </button>
+                <h3 class="font-serif text-3xl text-white">¡Te esperamos!</h3>
+            </div>
+            
+            <!-- Body Modal -->
+            <div class="p-6 sm:p-8 overflow-y-auto">
+                <form id="rsvpForm" class="space-y-4 font-sans text-sm md:text-base">
+                    
+                    <div>
+                        <label class="block text-wedding-text mb-1 font-semibold">Nombre y Apellido</label>
+                        <input type="text" name="nombre" required class="w-full px-4 py-3 border border-wedding-sand rounded focus:outline-none focus:border-wedding-olive-dark focus:ring-1 focus:ring-wedding-olive-dark transition-colors bg-wedding-bg text-base">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-wedding-text mb-2 font-semibold">¿Asistirás?</label>
+                        <div class="flex flex-col gap-2">
+                            <label class="flex items-center gap-3 cursor-pointer p-3 border border-wedding-sand rounded hover:bg-wedding-sand/50 transition-colors">
+                                <input type="radio" name="asistencia" value="Sí" checked class="text-wedding-olive-dark focus:ring-wedding-olive-dark w-4 h-4">
+                                <span class="text-base font-medium">Sí, ¡ahí estaré!</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer p-3 border border-wedding-sand rounded hover:bg-wedding-sand/50 transition-colors">
+                                <input type="radio" name="asistencia" value="No" class="text-wedding-olive-dark focus:ring-wedding-olive-dark w-4 h-4">
+                                <span class="text-base font-medium">No podré asistir</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="opcionesAsistencia">
+                        <label class="block text-wedding-text mb-2 font-semibold">¿Con quién venís?</label>
+                        <select name="tipo_asistencia" id="tipoAsistencia" class="w-full px-4 py-3 border border-wedding-sand rounded focus:outline-none focus:border-wedding-olive-dark focus:ring-1 focus:ring-wedding-olive-dark transition-colors bg-wedding-bg text-base">
+                            <option value="solo">Voy solo/a</option>
+                            <option value="con_acompanante">Voy con acompañante</option>
+                        </select>
+                    </div>
+
+                    <div id="campoAcompanante" class="hidden transition-all duration-300">
+                        <label class="block text-wedding-text mb-1 font-semibold">Nombre y Apellido del Acompañante</label>
+                        <input type="text" name="nombre_acompanante" id="inputAcompanante" class="w-full px-4 py-3 border border-wedding-sand rounded focus:outline-none focus:border-wedding-olive-dark focus:ring-1 focus:ring-wedding-olive-dark transition-colors bg-wedding-bg text-base">
+                    </div>
+
+                    <div>
+                        <label class="block text-wedding-text mb-1 font-semibold">Menú Especial / Restricciones</label>
+                        <p class="text-xs text-wedding-text-light mb-2">Aclará si es para vos, para tu acompañante, o ninguno.</p>
+                        <input type="text" name="menu_especial" placeholder="Ej: Yo vegetariano, Acompañante celíaco" class="w-full px-4 py-3 border border-wedding-sand rounded focus:outline-none focus:border-wedding-olive-dark focus:ring-1 focus:ring-wedding-olive-dark transition-colors bg-wedding-bg text-base">
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit" class="w-full py-4 bg-wedding-olive-dark text-white uppercase tracking-wider font-semibold hover:bg-wedding-olive-light transition-colors rounded shadow-md text-sm">
+                            Enviar Confirmación
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const GOOGLE_SCRIPT_URL_RSVP = 'https://script.google.com/macros/s/AKfycbw5MCvgzsFfmxVGlsvnS92wZgjVVn4n2mSaqMguUpuPajgyNTMppB0-cRC6x0NptZs/exec'; 
+        const GOOGLE_SCRIPT_URL_CANCIONES = 'https://script.google.com/macros/s/AKfycbxg3O-pcM5vWzG-R6TDQpuCLyTk6729ubI4HixX3l16UL3t4Yu0ksVf_UDRwyGcKGdK/exec';
+
+        // --- ANIMACIONES ON SCROLL ---
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach((elem) => {
+            observer.observe(elem);
+        });
+
+        // --- COUNTDOWN TIMER ---
+        const weddingDate = new Date("Dec 12, 2026 17:30:00").getTime(); 
+
+        const countdown = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            if (distance < 0) {
+                clearInterval(countdown);
+                document.getElementById("dias").innerText = "00";
+                document.getElementById("horas").innerText = "00";
+                document.getElementById("minutos").innerText = "00";
+                document.getElementById("segundos").innerText = "00";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("dias").innerText = days.toString().padStart(2, '0');
+            document.getElementById("horas").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("minutos").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("segundos").innerText = seconds.toString().padStart(2, '0');
+        }, 1000);
+
+        // --- FLOATING AUDIO PLAYER ---
+        const bgMusic = document.getElementById('bgMusic');
+        const musicToggle = document.getElementById('musicToggle');
+        const musicIcon = document.getElementById('musicIcon');
+        let isPlaying = false;
+
+        musicToggle.addEventListener('click', () => {
+            if (isPlaying) {
+                bgMusic.pause();
+                musicIcon.classList.remove('fa-pause');
+                musicIcon.classList.add('fa-play');
+                musicIcon.classList.add('ml-1'); 
+                musicToggle.classList.remove('music-playing');
+            } else {
+                bgMusic.play().then(() => {
+                    musicIcon.classList.remove('fa-play');
+                    musicIcon.classList.remove('ml-1');
+                    musicIcon.classList.add('fa-pause');
+                    musicToggle.classList.add('music-playing');
+                }).catch(error => {
+                    console.log("Autoplay fue prevenido.");
+                });
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // --- MODAL RSVP LOGIC ---
+        const modal = document.getElementById('rsvpModal');
+        const openBtn = document.getElementById('openRsvpBtn');
+        const closeBtn = document.getElementById('closeModal');
+        const backdrop = document.getElementById('modalBackdrop');
+        const rsvpForm = document.getElementById('rsvpForm');
+        
+        const radiosAsistencia = document.querySelectorAll('input[name="asistencia"]');
+        const tipoAsistenciaSelect = document.getElementById('tipoAsistencia');
+        const campoAcompanante = document.getElementById('campoAcompanante');
+        const inputAcompanante = document.getElementById('inputAcompanante');
+        const opcionesAsistenciaDiv = document.getElementById('opcionesAsistencia');
+
+        radiosAsistencia.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if(e.target.value === 'No') {
+                    opcionesAsistenciaDiv.classList.add('hidden');
+                    campoAcompanante.classList.add('hidden');
+                    inputAcompanante.required = false;
+                } else {
+                    opcionesAsistenciaDiv.classList.remove('hidden');
+                    if(tipoAsistenciaSelect.value === 'con_acompanante') {
+                        campoAcompanante.classList.remove('hidden');
+                        inputAcompanante.required = true;
+                    }
+                }
+            });
+        });
+
+        tipoAsistenciaSelect.addEventListener('change', (e) => {
+            if (e.target.value === 'con_acompanante') {
+                campoAcompanante.classList.remove('hidden');
+                inputAcompanante.required = true;
+            } else {
+                campoAcompanante.classList.add('hidden');
+                inputAcompanante.required = false;
+                inputAcompanante.value = ''; 
+            }
+        });
+
+        function toggleModal() {
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.style.overflow = '';
+            }
+        }
+
+        openBtn.addEventListener('click', toggleModal);
+        closeBtn.addEventListener('click', toggleModal);
+        backdrop.addEventListener('click', toggleModal);
+
+        rsvpForm.addEventListener('submit', (e) => {
+            e.preventDefault(); 
+            
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerText;
+            btn.innerText = "Enviando...";
+            btn.disabled = true;
+            
+            const formData = new FormData(rsvpForm);
+            
+            fetch(GOOGLE_SCRIPT_URL_RSVP, {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors' 
+            })
+            .then(() => {
+                btn.innerText = "¡Gracias por confirmar!";
+                btn.classList.replace('bg-wedding-olive-dark', 'bg-wedding-green');
+                
+                setTimeout(() => {
+                    toggleModal();
+                    btn.innerText = originalText;
+                    btn.classList.replace('bg-wedding-green', 'bg-wedding-olive-dark');
+                    btn.disabled = false;
+                    rsvpForm.reset();
+                    campoAcompanante.classList.add('hidden'); 
+                }, 2000);
+            })
+            .catch(error => {
+                btn.innerText = "Error, intente de nuevo";
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }, 3000);
+            });
+        });
+
+        // --- FORMULARIO CANCIONES LOGIC ---
+        const songForm = document.getElementById('songForm');
+        
+        songForm.addEventListener('submit', (e) => {
+            e.preventDefault(); 
+            
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerText;
+            btn.innerText = "Enviando...";
+            btn.disabled = true;
+            
+            const formData = new FormData(songForm);
+            
+            fetch(GOOGLE_SCRIPT_URL_CANCIONES, {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors' 
+            })
+            .then(() => {
+                btn.innerText = "¡Canción Sugerida!";
+                btn.classList.replace('bg-wedding-olive-dark', 'bg-wedding-green');
+                
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.classList.replace('bg-wedding-green', 'bg-wedding-olive-dark');
+                    btn.disabled = false;
+                    songForm.reset();
+                }, 3000);
+            })
+            .catch(error => {
+                btn.innerText = "Error, intente de nuevo";
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }, 3000);
+            });
+        });
+
+        // --- COPY TO CLIPBOARD FUNCIONALITY ---
+        function showCopyMessage() {
+            const msg = document.getElementById('copyMsg');
+            msg.style.opacity = '1';
+            setTimeout(() => { msg.style.opacity = '0'; }, 2000);
+        }
+
+        function copyCBU() {
+            navigator.clipboard.writeText("1234567890123456789012").then(showCopyMessage).catch(() => {
+                const textArea = document.createElement("textarea");
+                textArea.value = "1234567890123456789012";
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand("copy");
+                textArea.remove();
+                showCopyMessage();
+            });
+        }
+        function copyAlias() {
+            navigator.clipboard.writeText("cami.cris.boda").then(showCopyMessage).catch(() => {
+                const textArea = document.createElement("textarea");
+                textArea.value = "cami.cris.boda";
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand("copy");
+                textArea.remove();
+                showCopyMessage();
+            });
+        }
+
+        // --- AI CHATBOT LOGIC (GEMINI API) ---
+        const chatToggle = document.getElementById('chatToggle');
+        const chatWindow = document.getElementById('chatWindow');
+        const closeChat = document.getElementById('closeChat');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendChat = document.getElementById('sendChat');
+        
+        let chatHistory = [];
+        let isChatOpen = false;
+
+        function toggleChat() {
+            isChatOpen = !isChatOpen;
+            if (isChatOpen) {
+                chatWindow.classList.remove('hidden');
+                chatWindow.classList.add('flex');
+                setTimeout(() => chatInput.focus(), 100);
+            } else {
+                chatWindow.classList.add('hidden');
+                chatWindow.classList.remove('flex');
+            }
+        }
+
+        chatToggle.addEventListener('click', toggleChat);
+        closeChat.addEventListener('click', toggleChat);
+
+        // Utility to wait (exponential backoff helper)
+        const delay = ms => new Promise(res => setTimeout(res, ms));
+
+        async function fetchGeminiResponse(payload, retries = 3, backoff = 1000) {
+            const apiKey = ""; // API key is injected at runtime
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (!response.ok) {
+                        if (response.status === 429) {
+                            await delay(backoff);
+                            backoff *= 2; // Exponential backoff
+                            continue;
+                        }
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return await response.json();
+                } catch (error) {
+                    if (i === retries - 1) throw error;
+                    await delay(backoff);
+                    backoff *= 2;
+                }
+            }
+        }
+
+        async function handleSendMessage() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+
+            // Add user message to UI
+            appendMessage(text, 'user');
+            chatInput.value = '';
+            chatInput.disabled = true;
+            sendChat.disabled = true;
+
+            // Show loading typing indicator
+            const loadingId = appendMessage('<i class="fa-solid fa-circle text-[8px] animate-bounce"></i><i class="fa-solid fa-circle text-[8px] animate-bounce" style="animation-delay: 0.1s"></i><i class="fa-solid fa-circle text-[8px] animate-bounce" style="animation-delay: 0.2s"></i>', 'bot', true);
+
+            // Add to conversation history
+            chatHistory.push({ role: "user", parts: [{ text: text }] });
+
+            const systemPrompt = `Eres el asistente virtual oficial de la boda de Cami y Cris. Tu objetivo es ayudar a los invitados a resolver sus dudas.
+            
+            Información estricta de la boda:
+            - Pareja: Camila (Cami) y Cristian (Cris).
+            - Fecha del evento: Sábado 12 de Diciembre de 2026.
+            - Horario de inicio: 17:30 hs.
+            - Lugar de la fiesta: La Angelina Eventos, Unquillo, provincia de Córdoba, Argentina. (No hay ceremonia religiosa aparte).
+            - Código de vestimenta (Dress Code): Formal Elegante.
+            - Regalos: Se acepta dinero para la luna de miel mediante transferencia. CBU: 1234567890123456789012, Alias: cami.cris.boda, Banco: Banco Galicia. Titulares: Camila & Cristian.
+            - Asistencia: Los invitados deben confirmar asistencia desde esta misma web.
+            - Alojamiento: Próximamente se enviarán recomendaciones.
+            
+            Tus reglas de comportamiento:
+            1. Responde SIEMPRE de manera concisa (máximo 2 oraciones breves).
+            2. Usa un tono alegre, festivo y amable.
+            3. Habla en dialecto argentino/cordobés sutil (usa "vos", "tenés", "fijate", "lindo").
+            4. Si te preguntan algo que no está en la información provista, di educadamente que no tienes esa información y que le pregunten directamente a los novios.`;
+
+            const payload = {
+                contents: chatHistory,
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+            };
+
+            try {
+                const result = await fetchGeminiResponse(payload);
+                
+                // Remove loading indicator
+                document.getElementById(loadingId).remove();
+                
+                if (result.candidates && result.candidates[0].content) {
+                    const botResponseText = result.candidates[0].content.parts[0].text;
+                    appendMessage(botResponseText, 'bot');
+                    
+                    // Add bot response to history for context in next turn
+                    chatHistory.push(result.candidates[0].content);
+                } else {
+                    appendMessage("¡Ups! Me emocioné tanto que me quedé sin palabras. ¿Me lo preguntás de nuevo?", 'bot');
+                }
+            } catch (error) {
+                document.getElementById(loadingId).remove();
+                appendMessage("Perdón, estoy teniendo un problemita de conexión. Intentá de nuevo en un ratito.", 'bot');
+            } finally {
+                chatInput.disabled = false;
+                sendChat.disabled = false;
+                setTimeout(() => chatInput.focus(), 10);
+            }
+        }
+
+        function appendMessage(text, sender, isLoading = false) {
+            const msgDiv = document.createElement('div');
+            
+            if (sender === 'user') {
+                msgDiv.className = 'bg-wedding-olive-dark text-white p-3 rounded-lg rounded-tr-none shadow-sm self-end max-w-[85%] leading-relaxed';
+                msgDiv.innerText = text;
+            } else {
+                msgDiv.className = 'bg-white border border-wedding-sand text-wedding-text p-3 rounded-lg rounded-tl-none shadow-sm self-start max-w-[85%] leading-relaxed';
+                if (isLoading) {
+                    msgDiv.innerHTML = `<div class="flex gap-1 py-1 text-wedding-olive-light">${text}</div>`;
+                } else {
+                    // Convert basic markdown/linebreaks to html if any
+                    msgDiv.innerHTML = text.replace(/\n/g, '<br>');
+                }
+            }
+            
+            if (isLoading) {
+                msgDiv.id = 'loading-' + Date.now();
+            }
+            
+            chatMessages.appendChild(msgDiv);
+            
+            // Smooth scroll to bottom
+            chatMessages.scrollTo({
+                top: chatMessages.scrollHeight,
+                behavior: 'smooth'
+            });
+            
+            return msgDiv.id;
+        }
+
+        sendChat.addEventListener('click', handleSendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleSendMessage();
+        });
+
+    </script>
+</body>
+</html>

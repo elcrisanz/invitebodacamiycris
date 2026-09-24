@@ -1,4 +1,4 @@
-export default async function handler(req, res) {
+module.exports = async function(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
@@ -12,8 +12,7 @@ export default async function handler(req, res) {
             });
         }
 
-        const apiUrl =
-            'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+        const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
 
         const googleResponse = await fetch(apiUrl, {
             method: 'POST',
@@ -28,7 +27,6 @@ export default async function handler(req, res) {
 
         if (!googleResponse.ok) {
             console.error('Gemini error:', data);
-
             return res.status(googleResponse.status).json({
                 error: data
             });
@@ -38,9 +36,8 @@ export default async function handler(req, res) {
 
     } catch (error) {
         console.error('Server error:', error);
-
         return res.status(500).json({
             error: 'Error comunicándose con Gemini'
         });
     }
-}
+};

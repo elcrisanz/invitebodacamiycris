@@ -687,6 +687,11 @@ async function fetchGeminiResponse(payload, retries = 3, backoff = 1000) {
             5. Si preguntan otra cosa, respondé con sarcasmo o chistes, pero siempre dales la respuesta real al final.
             6. Respuestas MUY cortas, de 2 o 3 oraciones máximo.`;
 
+            // Agregamos esto para limitar la memoria a los últimos 4 mensajes
+            if (chatHistory.length > 4) {
+                chatHistory = chatHistory.slice(chatHistory.length - 4);
+            }
+
             const payload = {
                 contents: chatHistory,
                 systemInstruction: { parts: [{ text: systemPrompt }] },

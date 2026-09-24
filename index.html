@@ -616,40 +616,40 @@
         // Utility to wait (exponential backoff helper)
         const delay = ms => new Promise(res => setTimeout(res, ms));
 
-async function fetchGeminiResponse(payload, retries = 5, backoff = 2000) {
-            for (let i = 0; i < retries; i++) {
-                try {
-                    const response = await fetch('/api/chat', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(payload)
-                    });
+async function fetchGeminiResponse(payload, retries = 3, backoff = 1000) {
+    for (let i = 0; i < retries; i++) {
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
 
-                    if (!response.ok) {
-                        const errorData = await response.json().catch(() => ({}));
-                        console.error('API error:', errorData);
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                console.error('API error:', errorData);
 
-                        // Acá está la magia: si Google dice "demasiados pedidos" (429) o "saturado" (503), espera y reintenta
-                        if (response.status === 429 || response.status === 503) {
-                            await delay(backoff);
-                            backoff *= 1.5;
-                            continue;
-                        }
-
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-
-                    return await response.json();
-
-                } catch (error) {
-                    if (i === retries - 1) throw error;
+                if (response.status === 429) {
                     await delay(backoff);
-                    backoff *= 1.5;
+                    backoff *= 2;
+                    continue;
                 }
+
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
+
+            return await response.json();
+
+        } catch (error) {
+            if (i === retries - 1) throw error;
+
+            await delay(backoff);
+            backoff *= 2;
         }
+    }
+}
 
         async function handleSendMessage() {
             const text = chatInput.value.trim();

@@ -8,7 +8,8 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "Falta la API Key en Vercel" });
   }
 
-  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+// Actualizado al modelo gratuito que Google tiene habilitado HOY
+  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`;
   
   try {
     const response = await fetch(apiUrl, {

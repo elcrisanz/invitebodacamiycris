@@ -9,8 +9,8 @@ export default async function handler(req, res) {
   }
 
   // Usamos el modelo oficial actual y pasamos la clave directo en la URL para evitar bloqueos
-  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-
+  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`;
+  
   try {
     const response = await fetch(apiUrl, {
       method: 'POST',

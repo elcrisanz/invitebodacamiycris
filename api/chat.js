@@ -8,9 +8,9 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "Falta la API Key en Vercel" });
   }
 
-  // Usamos el modelo oficial actual y pasamos la clave directo en la URL para evitar bloqueos
-  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`;
-  
+  // Ahora con la clave nueva, pedimos el modelo moderno que sí existe
+  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+
   try {
     const response = await fetch(apiUrl, {
       method: 'POST',
@@ -22,7 +22,6 @@ export default async function handler(req, res) {
 
     if (!response.ok) {
        console.error("Detalle del error de Google:", data);
-       // Le pasamos el error exacto de Google al navegador
        return res.status(response.status).json(data);
     }
 

@@ -3,30 +3,41 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
 
-  const apiKey = process.env.GEMINI_API_KEY; 
+  const apiKey = process.env.GEMINI_API_KEY;
+
   if (!apiKey) {
-    return res.status(500).json({ error: "Falta la API Key en Vercel" });
+    return res.status(500).json({
+      error: "Falta la API Key en Vercel"
+    });
   }
 
-// Actualizado al modelo gratuito que Google tiene habilitado HOY
-  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`;
-  
+  const apiUrl =
+    'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent';
+
   try {
     const response = await fetch(apiUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': apiKey
+      },
       body: JSON.stringify(req.body)
     });
-    
+
     const data = await response.json();
 
     if (!response.ok) {
-       console.error("Detalle del error de Google:", data);
-       return res.status(response.status).json(data);
+      console.error('Detalle del error de Google:', data);
+      return res.status(response.status).json(data);
     }
 
     return res.status(200).json(data);
+
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    console.error('Error interno:', error);
+
+    return res.status(500).json({
+      error: error.message
+    });
   }
 }

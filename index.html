@@ -44,10 +44,10 @@
         .hero-bg {
             background-image: linear-gradient(rgba(243, 241, 231, 0.75), rgba(243, 241, 231, 0.95)), url('fondo_pag.png');
             background-size: cover;
-            background-position: center;
+            background-position: 40% center; /* 40% lo mueve un poco a la izquierda */
             background-attachment: scroll; /* Solución para que se vea en el celu */
         }
-
+        
         /* Recuperamos el efecto fijo solo para pantallas más grandes (PCs o Tablets) */
         @media (min-width: 768px) {
             .hero-bg {
@@ -166,7 +166,7 @@
             </p>
         </div>
 
-        <!-- Tarjeta de la Fiesta (Versión Original) -->
+        <!-- Tarjeta de la Fiesta -->
         <div class="max-w-md mx-auto w-full">
             <div class="animate-on-scroll bg-white p-8 sm:p-10 rounded-2xl shadow-md text-center flex flex-col items-center border border-wedding-sage/30 w-full" style="transition-delay: 0.1s;">
                 
@@ -175,7 +175,8 @@
                 </div>
                 
                 <h3 class="font-serif text-3xl sm:text-4xl mb-3 text-wedding-text font-medium">La Fiesta</h3>
-                <p class="font-sans text-xs sm:text-sm tracking-widest uppercase mb-6 text-wedding-earth font-semibold">12 de Diciembre - 18:00 hs</p>                <p class="font-serif text-2xl sm:text-3xl mb-2 text-wedding-text">La Angelina Eventos</p>
+                <p class="font-sans text-xs sm:text-sm tracking-widest uppercase mb-6 text-wedding-earth font-semibold">12 de Diciembre - 18:00 hs</p>
+                <p class="font-serif text-2xl sm:text-3xl mb-2 text-wedding-text">La Angelina Eventos</p>
                 <p class="font-sans text-wedding-text-light mb-8 font-medium text-sm sm:text-base">Unquillo, Córdoba</p>
                 
                 <a href="https://maps.app.goo.gl/cxBafPKFR77cqNAy7" target="_blank" rel="noopener noreferrer" class="mt-auto w-full px-6 py-4 bg-wedding-olive-dark text-white hover:bg-wedding-olive-light transition-all duration-300 tracking-wider text-xs sm:text-sm uppercase rounded-lg shadow-md flex items-center justify-center font-medium">
@@ -203,7 +204,7 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 text-center w-full">
-                <!-- Dress Code (Versión Original) -->
+                <!-- Dress Code -->
                 <div class="animate-on-scroll bg-white p-8 rounded-xl shadow-sm border border-wedding-sand">
                     <i class="fa-solid fa-shirt text-4xl text-wedding-olive-dark mb-4"></i>
                     <h3 class="font-serif text-3xl mb-3 font-medium text-wedding-text">Dress Code</h3>
@@ -230,39 +231,75 @@
 
     <!-- Regalos -->
     <section class="min-h-[100svh] snap-start flex flex-col justify-center py-16 px-4 sm:px-6 text-center bg-wedding-sand/50">
-        <div class="max-w-2xl mx-auto w-full animate-on-scroll">
+        <div class="max-w-4xl mx-auto w-full animate-on-scroll">
             <div class="w-16 h-16 mx-auto bg-white rounded-full flex items-center justify-center mb-6 shadow-sm text-wedding-olive-dark border border-wedding-sage/50">
                 <i class="fa-solid fa-gift text-2xl"></i>
             </div>
             <h2 class="font-serif text-4xl sm:text-5xl mb-4 text-wedding-text font-medium">Regalos</h2>
-            <p class="font-serif text-lg sm:text-xl md:text-2xl mb-10 font-medium text-wedding-text-light leading-relaxed">
+            <p class="font-serif text-lg sm:text-xl md:text-2xl mb-10 font-medium text-wedding-text-light leading-relaxed max-w-2xl mx-auto">
                 El mejor regalo es que compartas este día con nosotros.<br> 
                 Pero si deseás ayudarnos con nuestra luna de miel:
             </p>
             
-            <div class="bg-white p-5 sm:p-8 rounded-xl shadow-md border border-wedding-sage/30 text-left w-full max-w-md mx-auto overflow-hidden">
-                <p class="font-sans text-sm mb-3 text-wedding-text"><span class="font-bold">Titular:</span> Camila & Cristian</p>
-                <p class="font-sans text-sm mb-3 text-wedding-text"><span class="font-bold">Banco:</span> Banco Galicia</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl mx-auto">
                 
-                <div class="flex flex-row justify-between items-center bg-wedding-bg p-3 sm:p-4 rounded-lg mt-4 border border-wedding-sand gap-2">
-                    <div class="flex-1 min-w-0">
-                        <p class="font-sans text-[11px] sm:text-sm font-mono break-all text-wedding-text font-medium">CBU: 1234567890123456789012</p>
+                <!-- Tarjeta Pesos (ARS) -->
+                <div class="bg-white p-5 sm:p-8 rounded-xl shadow-md border border-wedding-sage/30 text-left relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-wedding-sand text-wedding-text px-3 py-1 rounded-bl-lg font-bold text-xs uppercase tracking-wider">Pesos (ARS)</div>
+                    
+                    <p class="font-sans text-sm mb-3 text-wedding-text mt-2"><span class="font-bold">Titular:</span> Camila & Cristian</p>
+                    <p class="font-sans text-sm mb-3 text-wedding-text"><span class="font-bold">Banco:</span> Banco Galicia</p>
+                    
+                    <div class="flex flex-row justify-between items-center bg-wedding-bg p-3 sm:p-4 rounded-lg mt-4 border border-wedding-sand gap-2">
+                        <div class="flex-1 min-w-0">
+                            <p class="font-sans text-[11px] sm:text-sm font-mono break-all text-wedding-text font-medium">CBU: 1234567890123456789012</p>
+                        </div>
+                        <button onclick="copyToClipboard('1234567890123456789012')" class="shrink-0 text-wedding-olive-dark hover:text-wedding-olive-light transition-colors bg-white p-2 sm:p-2.5 rounded shadow-sm border border-wedding-sand/50" title="Copiar CBU">
+                            <i class="fa-regular fa-copy text-base sm:text-lg"></i>
+                        </button>
                     </div>
-                    <button onclick="copyCBU()" class="shrink-0 text-wedding-olive-dark hover:text-wedding-olive-light transition-colors bg-white p-2 sm:p-2.5 rounded shadow-sm border border-wedding-sand/50" title="Copiar CBU">
-                        <i class="fa-regular fa-copy text-base sm:text-lg"></i>
-                    </button>
-                </div>
-                
-                <div class="flex flex-row justify-between items-center bg-wedding-bg p-3 sm:p-4 rounded-lg mt-3 border border-wedding-sand gap-2">
-                    <div class="flex-1 min-w-0">
-                        <p class="font-sans text-[11px] sm:text-sm font-mono break-all text-wedding-text font-medium">Alias: cami.cris.boda</p>
+                    
+                    <div class="flex flex-row justify-between items-center bg-wedding-bg p-3 sm:p-4 rounded-lg mt-3 border border-wedding-sand gap-2">
+                        <div class="flex-1 min-w-0">
+                            <p class="font-sans text-[11px] sm:text-sm font-mono break-all text-wedding-text font-medium">Alias: cami.cris.boda</p>
+                        </div>
+                        <button onclick="copyToClipboard('cami.cris.boda')" class="shrink-0 text-wedding-olive-dark hover:text-wedding-olive-light transition-colors bg-white p-2 sm:p-2.5 rounded shadow-sm border border-wedding-sand/50" title="Copiar Alias">
+                            <i class="fa-regular fa-copy text-base sm:text-lg"></i>
+                        </button>
                     </div>
-                    <button onclick="copyAlias()" class="shrink-0 text-wedding-olive-dark hover:text-wedding-olive-light transition-colors bg-white p-2 sm:p-2.5 rounded shadow-sm border border-wedding-sand/50" title="Copiar Alias">
-                        <i class="fa-regular fa-copy text-base sm:text-lg"></i>
-                    </button>
                 </div>
-                
-                <p id="copyMsg" class="text-xs text-wedding-olive-dark mt-3 text-center font-bold opacity-0 transition-opacity">¡Copiado al portapapeles!</p>
+
+                <!-- Tarjeta Dólares (USD) -->
+                <div class="bg-white p-5 sm:p-8 rounded-xl shadow-md border border-wedding-sage/30 text-left relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-wedding-olive-light text-white px-3 py-1 rounded-bl-lg font-bold text-xs uppercase tracking-wider">Dólares (USD)</div>
+                    
+                    <p class="font-sans text-sm mb-3 text-wedding-text mt-2"><span class="font-bold">Titular:</span> Cristian Sánchez</p>
+                    <p class="font-sans text-sm mb-3 text-wedding-text"><span class="font-bold">Banco:</span> Banco Galicia</p>
+                    
+                    <div class="flex flex-row justify-between items-center bg-wedding-bg p-3 sm:p-4 rounded-lg mt-4 border border-wedding-sand gap-2">
+                        <div class="flex-1 min-w-0">
+                            <p class="font-sans text-[11px] sm:text-sm font-mono break-all text-wedding-text font-medium">CBU: 0720205888000038774386</p>
+                        </div>
+                        <button onclick="copyToClipboard('0720205888000038774386')" class="shrink-0 text-wedding-olive-dark hover:text-wedding-olive-light transition-colors bg-white p-2 sm:p-2.5 rounded shadow-sm border border-wedding-sand/50" title="Copiar CBU">
+                            <i class="fa-regular fa-copy text-base sm:text-lg"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="flex flex-row justify-between items-center bg-wedding-bg p-3 sm:p-4 rounded-lg mt-3 border border-wedding-sand gap-2">
+                        <div class="flex-1 min-w-0">
+                            <p class="font-sans text-[11px] sm:text-sm font-mono break-all text-wedding-text font-medium">Alias: camiycris.usd</p>
+                        </div>
+                        <button onclick="copyToClipboard('camiycris.usd')" class="shrink-0 text-wedding-olive-dark hover:text-wedding-olive-light transition-colors bg-white p-2 sm:p-2.5 rounded shadow-sm border border-wedding-sand/50" title="Copiar Alias">
+                            <i class="fa-regular fa-copy text-base sm:text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- Toast de confirmación de copiado -->
+            <div id="copyMsg" class="fixed bottom-24 left-1/2 transform -translate-x-1/2 bg-wedding-olive-dark text-white px-6 py-3 rounded-full shadow-lg font-bold text-sm opacity-0 transition-opacity z-50 pointer-events-none flex items-center gap-2">
+                <i class="fa-solid fa-check"></i> ¡Copiado al portapapeles!
             </div>
         </div>
     </section>
@@ -570,6 +607,7 @@
             observer.observe(elem);
         });
 
+        // --- STREAMING_CHUNK:Calculando cuenta regresiva... -->
         // --- COUNTDOWN TIMER ---
         const weddingDate = new Date("Dec 12, 2026 18:00:00").getTime(); 
 
@@ -597,7 +635,7 @@
             document.getElementById("segundos").innerText = seconds.toString().padStart(2, '0');
         }, 1000);
 
-        // --- STREAMING_CHUNK:Lógica Modal RSVP ---
+        // --- STREAMING_CHUNK:Cargando lógica de confirmación de asistencia... -->
         // --- MODAL RSVP LOGIC ---
         const modal = document.getElementById('rsvpModal');
         const openBtn = document.getElementById('openRsvpBtn');
@@ -691,7 +729,7 @@
         });
     });
 
-        // --- STREAMING_CHUNK:Lógica Modal Alojamiento ---
+        // --- STREAMING_CHUNK:Cargando lógicas de alojamiento y música... -->
         // --- MODAL ALOJAMIENTO LOGIC ---
         const modalAlojamiento = document.getElementById('alojamientoModal');
         const closeAlojamientoBtn = document.getElementById('closeAlojamientoBtn');
@@ -712,7 +750,7 @@
         closeAlojamientoBtn.addEventListener('click', toggleAlojamientoModal);
         alojamientoBackdrop.addEventListener('click', toggleAlojamientoModal);
 
-        // --- STREAMING_CHUNK:Lógica Spotify y Canciones ---
+
         // --- FORMULARIO CANCIONES LOGIC ---
         const songForm = document.getElementById('songForm');
         
@@ -757,21 +795,17 @@
             const webUrl = "https://open.spotify.com/playlist/58yo2piM1cky7OGDQbqKhe";
             const appUrl = "spotify:playlist:58yo2piM1cky7OGDQbqKhe";
             
-            // Verificamos si están usando un celular
             if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                // Forzamos abrir la app nativa
                 window.location.href = appUrl;
-                // Si en 1.5 segundos no se fue a la app (porque no la tiene), le abrimos la web en pestaña nueva
                 setTimeout(() => {
                     window.open(webUrl, "_blank");
                 }, 1500);
             } else {
-                // Si están en la compu, abrimos directo en pestaña nueva
                 window.open(webUrl, "_blank");
             }
         }
 
-        // --- STREAMING_CHUNK:Lógica Portapapeles ---
+        // --- STREAMING_CHUNK:Lógica mejorada para copiar al portapapeles... -->
         // --- COPY TO CLIPBOARD FUNCIONALITY ---
         function showCopyMessage() {
             const msg = document.getElementById('copyMsg');
@@ -779,21 +813,11 @@
             setTimeout(() => { msg.style.opacity = '0'; }, 2000);
         }
 
-        function copyCBU() {
-            navigator.clipboard.writeText("1234567890123456789012").then(showCopyMessage).catch(() => {
+        function copyToClipboard(textToCopy) {
+            navigator.clipboard.writeText(textToCopy).then(showCopyMessage).catch(() => {
+                // Fallback para celulares viejos
                 const textArea = document.createElement("textarea");
-                textArea.value = "1234567890123456789012";
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand("copy");
-                textArea.remove();
-                showCopyMessage();
-            });
-        }
-        function copyAlias() {
-            navigator.clipboard.writeText("cami.cris.boda").then(showCopyMessage).catch(() => {
-                const textArea = document.createElement("textarea");
-                textArea.value = "cami.cris.boda";
+                textArea.value = textToCopy;
                 document.body.appendChild(textArea);
                 textArea.select();
                 document.execCommand("copy");
@@ -802,7 +826,7 @@
             });
         }
 
-        // --- STREAMING_CHUNK:Lógica Bot IA Gemini ---
+        // --- STREAMING_CHUNK:Inicializando Gemini y sistema de chat... -->
         // --- AI CHATBOT LOGIC (GEMINI API) ---
         const chatToggle = document.getElementById('chatToggle');
         const chatWindow = document.getElementById('chatWindow');
@@ -829,7 +853,6 @@
         chatToggle.addEventListener('click', toggleChat);
         closeChat.addEventListener('click', toggleChat);
 
-        // Utility to wait (exponential backoff helper)
         const delay = ms => new Promise(res => setTimeout(res, ms));
 
         async function fetchGeminiResponse(payload, retries = 5, backoff = 2000) {
@@ -847,7 +870,6 @@
                         const errorData = await response.json().catch(() => ({}));
                         console.error('API error:', errorData);
 
-                        // Acá está la magia: si Google dice "demasiados pedidos" (429) o "saturado" (503), espera y reintenta
                         if (response.status === 429 || response.status === 503) {
                             await delay(backoff);
                             backoff *= 1.5;
@@ -871,16 +893,13 @@
             const text = chatInput.value.trim();
             if (!text) return;
 
-            // Add user message to UI
             appendMessage(text, 'user');
             chatInput.value = '';
             chatInput.disabled = true;
             sendChat.disabled = true;
 
-            // Show loading typing indicator
             const loadingId = appendMessage('<i class="fa-solid fa-circle text-[8px] animate-bounce"></i><i class="fa-solid fa-circle text-[8px] animate-bounce" style="animation-delay: 0.1s"></i><i class="fa-solid fa-circle text-[8px] animate-bounce" style="animation-delay: 0.2s"></i>', 'bot', true);
 
-            // Add to conversation history
             chatHistory.push({ role: "user", parts: [{ text: text }] });
 
             const systemPrompt = `Sos el asistente virtual oficial de la boda de Cami y Cris. Tu objetivo es ayudar a los invitados, pero sos un bot MUY gracioso, sarcástico, picante y bien argentino/cordobés.
@@ -892,7 +911,7 @@
             - Lugar de la fiesta: La Angelina Eventos, Unquillo, provincia de Córdoba. (No hay ceremonia religiosa aparte).
             - Código de vestimenta (Dress Code): Formal Elegante.
             - REGLA DE VESTIMENTA: Las mujeres tienen PROHIBIDO ir de blanco. Los hombres tienen PROHIBIDO ir de Beige o "Greige" (de esos tonos va el novio).
-            - Regalos: Se acepta plata para la luna de miel. CBU: 1234567890123456789012, Alias: cami.cris.boda (Banco Galicia).
+            - Regalos: Se acepta plata para la luna de miel. Pesos ARS (CBU: 1234567890123456789012, Alias: cami.cris.boda). Dólares USD (CBU: 0720205888000038774386, Alias: camiycris.usd, Titular: Cristian Sánchez, Banco Galicia).
             - Asistencia: Confirmar desde esta misma web antes del 22 de Noviembre.
             
             Tus reglas de comportamiento (MUY IMPORTANTE):
@@ -903,7 +922,6 @@
             5. Si preguntan otra cosa, respondé con sarcasmo o chistes, pero siempre dales la respuesta real al final.
             6. Respuestas MUY cortas, de 2 o 3 oraciones máximo.`;
 
-            // Limitar la memoria a los últimos 4 mensajes
             if (chatHistory.length > 4) {
                 chatHistory = chatHistory.slice(chatHistory.length - 4);
             }
@@ -916,14 +934,12 @@
             try {
                 const result = await fetchGeminiResponse(payload);
                 
-                // Remove loading indicator
                 document.getElementById(loadingId).remove();
                 
                 if (result.candidates && result.candidates[0].content) {
                     const botResponseText = result.candidates[0].content.parts[0].text;
                     appendMessage(botResponseText, 'bot');
                     
-                    // Add bot response to history for context in next turn
                     chatHistory.push(result.candidates[0].content);
                 } else {
                     appendMessage("¡Ups! Me emocioné tanto que me quedé sin palabras. ¿Me lo preguntás de nuevo?", 'bot');
@@ -974,3 +990,4 @@
 
     </script>
 </body>
+</html>

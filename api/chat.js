@@ -9,12 +9,12 @@ export default async function handler(req, res) {
 
   if (!apiKey) {
     return res.status(500).json({
-      error: "Falta la API Key en Vercel. Asegurate de configurar GEMINI_API_KEY en tu dashboard."
+      error: "Falta la API Key en Vercel"
     });
   }
 
-  // MÉTODO INFALIBLE: Pasamos la key directamente en la URL en lugar de los headers
-  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+  // MÉTODO INFALIBLE y MODELO ACTUALIZADO: Pasamos la key en la URL y usamos la versión 2.5-flash
+  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
   try {
     const response = await fetch(apiUrl, {
@@ -22,7 +22,6 @@ export default async function handler(req, res) {
       headers: {
         'Content-Type': 'application/json'
       },
-      // Pasamos directamente el body que armamos en el index.html (historial y systemPrompt)
       body: JSON.stringify(req.body)
     });
 

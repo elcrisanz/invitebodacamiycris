@@ -355,7 +355,7 @@
 
             <!-- Botón Inteligente Spotify -->
             <div class="mb-10">
-                <a href="#" onclick="openSpotify(event)" class="inline-flex items-center gap-2 px-6 py-3 bg-[#1DB954] text-white hover:bg-[#1ed760] transition-colors rounded-full font-sans text-sm font-semibold shadow-md">
+                <a href="https://open.spotify.com/playlist/58yo2piM1cky7OGDQbqKhe?si=qUe6SJO-ThOm6_5s9UXgJg&utm_source=copy-link&pi=SkIFYx2tSwylF&pt=d0d1cf2278dd39fff80ba33fb75baf5b" onclick="openSpotify(event)" class="inline-flex items-center gap-2 px-6 py-3 bg-[#1DB954] text-white hover:bg-[#1ed760] transition-colors rounded-full font-sans text-sm font-semibold shadow-md">
                     <i class="fa-brands fa-spotify text-lg"></i> Abrir en Spotify para agregar temas
                 </a>
             </div>
@@ -834,21 +834,19 @@
         });
 
         // --- SPOTIFY APP LOGIC ---
-        function openSpotify(e) {
+       function openSpotify(e) {
             e.preventDefault();
-            // URL web actualizada con tu token colaborativo
             const webUrl = "https://open.spotify.com/playlist/58yo2piM1cky7OGDQbqKhe?si=qUe6SJO-ThOm6_5s9UXgJg&utm_source=copy-link&pi=SkIFYx2tSwylF&pt=d0d1cf2278dd39fff80ba33fb75baf5b";
-            const appUrl = "spotify:playlist:58yo2piM1cky7OGDQbqKhe";
             
             if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                window.location.href = appUrl;
-                setTimeout(() => {
-                    window.open(webUrl, "_blank");
-                }, 1500);
+                // En celulares, abrimos el link en la misma pestaña. 
+                // El sistema operativo interceptará la URL y abrirá la app nativa automáticamente con los permisos de colaboración.
+                window.location.href = webUrl;
             } else {
+                // En computadora (PC/Mac) lo abrimos en una pestaña nueva
                 window.open(webUrl, "_blank");
             }
-         }
+        }
 
         // --- COPY TO CLIPBOARD FUNCIONALITY ---
         function showCopyMessage() {

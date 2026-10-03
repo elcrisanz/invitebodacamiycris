@@ -249,7 +249,7 @@
     </section>
 
     <!-- Regalos -->
-    <section class="flex flex-col justify-start pt-24 pb-16 px-4 sm:px-6 text-center bg-wedding-sand/50">
+    <section class="flex flex-col justify-start pt-24 pb-16 px-4 sm:px-6 text-center bg-wedding-bg">
         <div class="max-w-4xl mx-auto w-full animate-on-scroll">
             <div class="w-16 h-16 mx-auto bg-white rounded-full flex items-center justify-center mb-6 shadow-sm text-wedding-olive-dark border border-wedding-sage/50">
                 <i class="fa-solid fa-gift text-2xl"></i>
@@ -329,7 +329,7 @@
     </section>
 
     <!-- Música -->
-    <section class="min-h-[100svh] flex flex-col justify-center py-16 px-4 sm:px-6 text-center bg-wedding-bg">
+    <section class="min-h-[100svh] flex flex-col justify-center py-16 px-4 sm:px-6 text-center bg-wedding-sand/50">
         <div class="max-w-3xl mx-auto w-full animate-on-scroll">
             <h2 class="font-serif text-4xl sm:text-5xl text-wedding-olive-dark mb-4 font-medium">¿Qué canciones no pueden faltar?</h2>
             <p class="font-serif text-xl sm:text-2xl mb-4 font-medium text-wedding-text">
@@ -836,7 +836,8 @@
         // --- SPOTIFY APP LOGIC ---
         function openSpotify(e) {
             e.preventDefault();
-            const webUrl = "https://open.spotify.com/playlist/58yo2piM1cky7OGDQbqKhe";
+            // URL web actualizada con tu token colaborativo
+            const webUrl = "https://open.spotify.com/playlist/58yo2piM1cky7OGDQbqKhe?si=qUe6SJO-ThOm6_5s9UXgJg&utm_source=copy-link&pi=SkIFYx2tSwylF&pt=d0d1cf2278dd39fff80ba33fb75baf5b";
             const appUrl = "spotify:playlist:58yo2piM1cky7OGDQbqKhe";
             
             if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
@@ -847,7 +848,7 @@
             } else {
                 window.open(webUrl, "_blank");
             }
-        }
+         }
 
         // --- COPY TO CLIPBOARD FUNCIONALITY ---
         function showCopyMessage() {

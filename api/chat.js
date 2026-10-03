@@ -13,16 +13,14 @@ export default async function handler(req, res) {
     });
   }
 
-  // Corregido a gemini-1.5-flash que es la versión oficial, estable y súper rápida de Google actual.
-  const apiUrl =
-    'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+  // MÉTODO INFALIBLE: Pasamos la key directamente en la URL en lugar de los headers
+  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
   try {
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'x-goog-api-key': apiKey
+        'Content-Type': 'application/json'
       },
       // Pasamos directamente el body que armamos en el index.html (historial y systemPrompt)
       body: JSON.stringify(req.body)

@@ -391,6 +391,25 @@
         </div>
     </section>
 
+    <!-- Instagram -->
+    <section class="flex flex-col justify-center py-16 px-4 sm:px-6 text-center bg-wedding-bg">
+        <div class="max-w-3xl mx-auto w-full animate-on-scroll">
+            <div class="w-16 h-16 mx-auto bg-white rounded-full flex items-center justify-center mb-6 shadow-sm text-wedding-olive-dark border border-wedding-sage/50">
+                <i class="fa-brands fa-instagram text-3xl"></i>
+            </div>
+            <h2 class="font-serif text-4xl sm:text-5xl text-wedding-olive-dark mb-4 font-medium">El detrás de escena</h2>
+            <p class="font-serif text-xl sm:text-2xl mb-8 font-medium text-wedding-text">
+                ¡Seguí el IG de nuestra boda y no te pierdas ninguna novedad!
+            </p>
+            
+            <div class="mb-4">
+                <a href="https://www.instagram.com/cycwedding/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white hover:opacity-90 transition-opacity rounded-full font-sans text-sm font-bold shadow-lg transform hover:-translate-y-1 duration-300">
+                    <i class="fa-brands fa-instagram text-2xl"></i> Ir a @cycwedding
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer Wedding Planner -->
     <footer class="bg-[#F3F1E7] border-t border-wedding-sand text-center py-16 px-6">
         <div class="max-w-2xl mx-auto animate-on-scroll">
@@ -1072,6 +1091,8 @@
 
             const systemPrompt = `Sos el asistente virtual oficial de la boda de Cami y Cris. Tu objetivo es ayudar a los invitados, pero sos un bot MUY gracioso, sarcástico, picante y bien argentino/cordobés.
 
+            const systemPrompt = `Sos el asistente virtual oficial de la boda de Cami y Cris. Tu objetivo es ayudar a los invitados, pero sos un bot MUY gracioso, sarcástico, picante y bien argentino/cordobés.
+
             Información estricta de la boda:
             - Pareja: Camila (Cami) y Cristian (Cris).
             - Fecha del evento: Sábado 12 de Diciembre de 2026.
@@ -1084,6 +1105,7 @@
             - Alojamiento / Hospedaje: Tenemos una sección en esta misma web ("Dónde dormir") con varias opciones cerca del salón (Orfeo Suites Salsipuedes, Howard Johnson, Wayna Lodge, La Santa Hotel Boutique) y en Córdoba Capital (Neper, Orfeo Suites Hotel, Quorum, Ñu Posta Urbana, Mae). Deciles que hagan clic en el botón con el ícono de la camita en la web para ver los links a los mapas y webs.
             - Traslados: Se pueden anotar en la página. Cuando tengamos un buen número de gente, la vamos a sumar a un grupo de Whatsapp junto con empresas de traslados para que coordinen. 
             - Ayuda extra: Contamos con la ayuda de Laura, nuestra Wedding Planner. Se puede contactar a Laura por cualquier duda existencial.
+            - Instagram: Tenemos un perfil oficial de la boda para enterarse de las novedades. El usuario es @cycwedding y el link https://www.instagram.com/cycwedding/
             
             Tus reglas de comportamiento (MUY IMPORTANTE):
             1. Hablá siempre en argentino/cordobés ("vos", "che", "chupetín", "fernet", "culiao", etc.).
@@ -1091,9 +1113,11 @@
             3. Si te preguntan si pueden tomar o emborracharse, respondé algo como: "Todavía no empezó y yo que soy un bot de inteligencia artificial ya estoy medio en pedo. ¡Calculá cómo vas a terminar vos!"
             4. Si los hombres preguntan qué ropa ponerse, advertiles seriamente pero con humor que ni se les ocurra ir de beige o greige porque Cris (el novio) los echa a patadas.
             5. Cuando pases el contacto de Laura la Wedding Planner, DEBÉS devolver exactamente este código HTML para que puedan hacerle clic: <a href="https://wa.me/5493515143309?text=Hola%20Lau!%20Te%20escribo%20desde%20el%20bot%20de%20la%20boda%20de%20Cami%20y%20Cris." target="_blank" style="color: #7F865C; text-decoration: underline; font-weight: bold;">Escribile a Lau por WhatsApp haciendo clic acá</a>
-            6. Si preguntan otra cosa, respondé con sarcasmo o chistes, pero siempre dales la respuesta real al final.
-            7. Respuestas MUY cortas, de 2 o 3 oraciones máximo.`;
-
+            6. Si te preguntan por fotos, novedades, chusmerío, o como sugerencia aleatoria tuya, recomendales SIEMPRE seguir el Instagram de la boda respondiendo exactamente con este código HTML para que hagan clic: <a href="https://www.instagram.com/cycwedding/" target="_blank" style="color: #7F865C; text-decoration: underline; font-weight: bold;">Chusmeá el Instagram acá: @cycwedding</a>
+            7. Si preguntan otra cosa, respondé con sarcasmo o chistes, pero siempre dales la respuesta real al final.
+            8. El novio como toda persona de bien es hincha de Talleres de Córdoba. Hacé chistes al respecto (no siempre), pero burlate de Belgrano (ej. "El fernet va a estar frío como pecho de pirata").    
+            9. Respuestas MUY cortas, de 2 o 3 oraciones máximo.`;
+            
             if (chatHistory.length > 4) {
                 chatHistory = chatHistory.slice(chatHistory.length - 4);
             }

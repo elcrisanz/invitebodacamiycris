@@ -1041,17 +1041,39 @@
         let chatHistory = [];
         let isChatOpen = false;
 
+       let secondMessageSent = false;
+
         function toggleChat() {
-            isChatOpen = !isChatOpen;
-            if (isChatOpen) {
-                chatWindow.classList.remove('hidden');
-                chatWindow.classList.add('flex');
-                setTimeout(() => chatInput.focus(), 100);
-            } else {
-                chatWindow.classList.add('hidden');
-                chatWindow.classList.remove('flex');
-            }
-        }
+                    isChatOpen = !isChatOpen;
+                    if (isChatOpen) {
+                        chatWindow.classList.remove('hidden');
+                        chatWindow.classList.add('flex');
+                        setTimeout(() => chatInput.focus(), 100);
+        
+                        // Disparar el segundo mensaje gracioso solo la primera vez que se abre
+                        if (!secondMessageSent) {
+                            secondMessageSent = true;
+                            
+                            setTimeout(() => {
+                                // Simulamos que el bot está escribiendo
+                                const loadingId = appendMessage('<i class="fa-solid fa-circle text-[8px] animate-bounce"></i><i class="fa-solid fa-circle text-[8px] animate-bounce" style="animation-delay: 0.1s"></i><i class="fa-solid fa-circle text-[8px] animate-bounce" style="animation-delay: 0.2s"></i>', 'bot', true);
+                                
+                                setTimeout(() => {
+                                    document.getElementById(loadingId).remove();
+                                    const msgExistencial = 'También respondo dudas existenciales como "¿Quién se ha tomado todo el vino?", o "¿Qué le pasa al que no hace palmas?", o cualquier otra duda que te acongoje en este momento.';
+                                    appendMessage(msgExistencial, 'bot');
+                                    
+                                    // Agregamos este mensaje al historial para que el bot sepa que lo dijo
+                                    chatHistory.push({ role: "model", parts: [{ text: msgExistencial }] });
+                                }, 1200); // Tiempo que pasa "escribiendo" (1.2 segundos)
+                            }, 800); // Tiempo que espera antes de empezar a escribir
+                        }
+        
+                    } else {
+                        chatWindow.classList.add('hidden');
+                        chatWindow.classList.remove('flex');
+                    }
+                }
 
         chatToggle.addEventListener('click', toggleChat);
         closeChat.addEventListener('click', toggleChat);

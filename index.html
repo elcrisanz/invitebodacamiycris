@@ -124,10 +124,22 @@
             </div>
         </div>
 
-        <!-- Chat Toggle Button -->
-        <button id="chatToggle" class="w-14 h-14 bg-white text-wedding-olive-dark rounded-full shadow-lg flex items-center justify-center hover:bg-wedding-bg transition-colors border border-wedding-sand hover:scale-105 transform duration-200">
-            <i class="fa-solid fa-message text-xl"></i>
-        </button>
+        <!-- Chat Toggle Button y Tooltip -->
+        <div class="relative">
+            <!-- Globito llamador -->
+            <div id="chatTooltip" class="absolute bottom-16 left-0 mb-2 w-64 bg-wedding-olive-dark text-white text-xs p-3 rounded-xl shadow-lg transform transition-all duration-700 opacity-0 translate-y-4 pointer-events-none rounded-bl-none border border-wedding-mustard/30 leading-relaxed z-50">
+                Si ya confirmaste y metiste temazo en la lista de Spotify... 👀 ¡Vení a darme bola antes de que me duerma!
+            </div>
+            
+            <button id="chatToggle" class="w-14 h-14 bg-white text-wedding-olive-dark rounded-full shadow-lg flex items-center justify-center hover:bg-wedding-bg transition-colors border border-wedding-sand hover:scale-105 transform duration-200 relative z-50">
+                <!-- Puntito de notificación rojo -->
+                <span id="chatBadge" class="absolute top-0 right-0 h-3 w-3 hidden">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                </span>
+                <i class="fa-solid fa-message text-xl"></i>
+            </button>
+        </div>
     </div>
 
     <header class="hero-bg min-h-[100svh] flex flex-col items-center justify-center relative px-4 py-12 text-center">
@@ -1186,6 +1198,39 @@
         sendChat.addEventListener('click', handleSendMessage);
         chatInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') handleSendMessage();
+        });
+
+        // --- TOOLTIP DEL CHAT LOGIC ---
+        // Mostrar el globito a los 45 segundos (45000 milisegundos)
+        setTimeout(() => {
+            const tooltip = document.getElementById('chatTooltip');
+            const chatToggleBtn = document.getElementById('chatToggle');
+            const chatBadge = document.getElementById('chatBadge');
+            
+            // Solo lo mostramos si el usuario no abrió el chat todavía
+            if (!isChatOpen) {
+                tooltip.classList.remove('opacity-0', 'translate-y-4');
+                tooltip.classList.add('opacity-100', 'translate-y-0');
+                
+                chatBadge.classList.remove('hidden');
+                chatBadge.classList.add('flex');
+                
+                chatToggleBtn.classList.add('animate-bounce');
+            }
+        }, 45000);
+
+        // Ocultar el globito y la notificación permanentemente al abrir el chat
+        chatToggle.addEventListener('click', () => {
+            const tooltip = document.getElementById('chatTooltip');
+            const chatBadge = document.getElementById('chatBadge');
+            const chatToggleBtn = document.getElementById('chatToggle');
+
+            if(tooltip) tooltip.classList.add('hidden');
+            if(chatBadge) {
+                chatBadge.classList.remove('flex');
+                chatBadge.classList.add('hidden');
+            }
+            if(chatToggleBtn) chatToggleBtn.classList.remove('animate-bounce');
         });
 
     </script>
